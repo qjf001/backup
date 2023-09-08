@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+            <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".4"
+                    android:textAlignment="textEnd"
+                    android:text="文件类型"/>
+
+            <Spinner
+                    android:id="@+id/dialog_select_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/type_string_array"
+                    android:layout_marginEnd="10dp"
+                    android:textAlignment="textStart"
+                    android:layout_weight="1">
+            </Spinner>
+
+        </LinearLayout>
+
+        <!-- 来一组bt -->
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/today_bt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".25"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="今天"/>
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/two_days_bt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".25"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="两天内"/>
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/one_week_bt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".25"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="一周内"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center">
+
+            <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".4"
+                    android:textAlignment="textEnd"
+                    android:text="起始日期"/>
+
+            <TextView
+                    android:id="@+id/file_createtime_start"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:textAlignment="textStart"
+                    android:enabled="false"/>
+            <!-- UI已经换行了 -->
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/select_createtime_start_bt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="请选择"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center">
+
+            <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".4"
+                    android:textAlignment="textEnd"
+                    android:text="结束日期"/>
+
+            <TextView
+                    android:id="@+id/file_createtime_end"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:textAlignment="textStart"
+                    android:enabled="false"/>
+            <!-- UI已经换行了 -->
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/select_createtime_end_bt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="请选择"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

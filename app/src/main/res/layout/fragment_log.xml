@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.log.LogFragment">
+
+    <!--统一使用LinearLayout进行包裹否则会出现控件重叠-->
+    <LinearLayout
+            android:id="@+id/scan_log_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="MissingConstraints"
+            android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/load_log_bt"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:text="点击加载日志"
+                tools:ignore="MissingConstraints"/>
+
+        <!-- HorizontalScrollView  水平滚动 ;    ScrollView 垂直滚动； NestedScrollView 包裹的内容能够实现整体的向上移动  -->
+        <!-- 设置一个表头 -->
+        <!--            android:layout_marginTop="40dp"-->
+        <LinearLayout
+                android:id="@+id/tb_head"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_above="@+id/load_log_bt"
+                tools:ignore="MissingConstraints">
+
+            <TextView
+                    android:id="@+id/scan_log_head1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"
+                    android:text="扫描时间"
+                    android:textAlignment="viewEnd"/>
+
+            <TextView
+                    android:id="@+id/scan_log_head2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"
+                    android:text="类型/数量/大小"
+                    android:textAlignment="viewEnd"/>
+
+            <TextView
+                    android:id="@+id/scan_log_head3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"
+                    android:text="状态"
+                    android:textAlignment="viewEnd"/>
+
+            <TextView
+                    android:id="@+id/scan_log_head4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"
+                    android:text="详情"
+                    android:textAlignment="viewEnd"/>
+        </LinearLayout>
+
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="60dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

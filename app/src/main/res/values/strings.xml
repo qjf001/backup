@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">文件备份</string>
+    <string name="title_home">首页</string>
+    <string name="title_log">日志</string>
+    <string name="title_setting">设置</string>
+
+    <string name="ftp_server">FTP服务器地址:端口</string>
+    <string name="ftp_user">FTP用户名</string>
+    <string name="ftp_pwd">FTP密码</string>
+
+    <string name="smb_server">SMB服务器地址:端口</string>
+    <string name="smb_shareName">SMB共享目录(不包含路径符号)</string>
+    <string name="smb_user">SMB用户名</string>
+    <string name="smb_pwd">SMB密码</string>
+
+    <string name="autoBackUpText">自动备份</string>
+    <string name="handBackUpText">手动备份</string>
+
+    <string name="ftp_connect_text">FTP连接测试</string>
+    <string name="connecting_text">连接中......</string>
+    <string name="smb_connect_text">SMB连接测试</string>
+</resources>

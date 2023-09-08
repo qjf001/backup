@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:textAlignment="gravity"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="7"
+            android:textAlignment="gravity"
+            tools:ignore="Suspicious0dp">
+
+        <!--android:textStyle="bold|italic"-->
+        <TextView
+                android:id="@+id/remote_dir_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:textFontWeight="700"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-black"
+                android:textSize="16sp"/>
+
+        <TextView
+                android:id="@+id/dir_info"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:textStyle="italic"
+                android:textSize="12sp"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/remote_dir_open"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:textAlignment="gravity"
+            android:text="打开"
+            android:textSize="18sp"/>
+</LinearLayout>
+

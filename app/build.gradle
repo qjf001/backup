@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.qjf.backup'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.qjf.backup"
+        minSdk 32
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildFeatures {
+        viewBinding true
+
+    }
+}
+
+dependencies {
+
+//    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation 'org.jetbrains:annotations:24.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // 不支持 sftp， 只支持 ftp tftp pop3 smtp 等， com.jcraft:jsch:0.1.55 代替
+    implementation 'commons-net:commons-net:3.9.0'
+    implementation 'com.hierynomus:smbj:0.12.1'
+    implementation 'jcifs:jcifs:1.3.17'
+
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
+    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+    implementation 'com.alibaba:fastjson:2.0.24'
+
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6' //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
+    implementation  'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+}
