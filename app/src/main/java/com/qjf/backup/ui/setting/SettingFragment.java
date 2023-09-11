@@ -365,6 +365,12 @@ public class SettingFragment extends Fragment {
         binding.showHidden.setChecked(showHidden.equals("Y"));
         binding.dontShowHidden.setChecked(!showHidden.equals("Y"));
 
+        String placeStrategy = settingMap.getOrDefault("placeStrategy", "N");// 归档策略
+        binding.dontPlace.setChecked("N".equals(placeStrategy));
+        binding.byDay.setChecked("byDay".equals(placeStrategy));
+        binding.byMonth.setChecked("byMonth".equals(placeStrategy));
+        binding.byYear.setChecked("byYear".equals(placeStrategy));
+
     }
 
     private void setSubmitBtListener() {
@@ -393,6 +399,9 @@ public class SettingFragment extends Fragment {
             String showHiddenSelectedText = showHiddenSelected.getText().toString();
             String showHiddenStrategy = "显示隐藏".equals(showHiddenSelectedText) ? "Y" : "N";
 
+            RadioButton placeStrategySelected = binding.placeByDateGroup.findViewById(binding.placeByDateGroup.getCheckedRadioButtonId());
+            String placeStrategySelectedText = placeStrategySelected.getText().toString();
+
 //            String imgLastBackupDatetime = Objects.requireNonNull(binding.imgLastBackupDatetime.getText()).toString();// 格式 yyyy-MM-dd HH:mm:ss
 //            String videoLastBackupDatetime = Objects.requireNonNull(binding.videoLastBackupDatetime.getText()).toString();// 格式 yyyy-MM-dd HH:mm:ss
 //            String audioLastBackupDatetime = Objects.requireNonNull(binding.audioLastBackupDatetime.getText()).toString();// 格式 yyyy-MM-dd HH:mm:ss
@@ -419,10 +428,30 @@ public class SettingFragment extends Fragment {
             editor.putString("onlyWifiBackUp", backupNetworkStrategy);
             editor.putString("showHidden", showHiddenStrategy);
 
+            editor.putString("placeStrategy", convertPlaceStrategy(placeStrategySelectedText));
+
             // 如果不关心返回值，可以由apply 替换 commit, apply 会立即提交到内存然后异步更新到磁盘
             editor.apply();// editor.commit();
             DialogUtil.showDialog(getContext(), "保存配置成功");
         });
+    }
+
+    private static String convertPlaceStrategy(String placeStrategySelectedText) {
+        // 不归档=N  // 按天归档=byDay  // 按月归档=byMonth // 按年归档=byYear
+        switch (placeStrategySelectedText) {
+            case "按天归档" -> {
+                return "byDay";
+            }
+            case "按月归档" -> {
+                return "byMonth";
+            }
+            case "按年归档" -> {
+                return "byYear";
+            }
+            default -> {
+                return "N";
+            }
+        }
     }
 
     private void setSmbConnectTestBtListener() {

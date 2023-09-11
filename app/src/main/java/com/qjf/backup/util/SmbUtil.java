@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SmbUtil {
 
@@ -74,6 +75,61 @@ public class SmbUtil {
         File source = new File(localInfo.getPath());
         long bytesWrite = SmbFiles.copy(source, share, remoteDir + File.separator + localInfo.getName(), true);// 如果已经上传的文件 只上传了一部分，这里允许覆盖原文件，重新上传
         return bytesWrite > 1 ? 1 : 0;
+    }
+
+    // placeStrategy 归档策略，根据归档策略重构 remoteDir
+    public static int uploadFile3(FileLocalInfo localInfo, DiskShare share, String remoteDir, String placeStrategy) throws IOException {
+        String newRemoteDir = reconfigRemoteDir(remoteDir, placeStrategy, localInfo.getCreateDateStr());// 包含归档路径的文件远程目录
+        if (!share.folderExists(newRemoteDir)) {// 不存在归档目录，或者setting中配置的目录，则创建该目录
+            mkdir(share, newRemoteDir);
+        }
+
+        List<FileIdBothDirectoryInformation> remoteFiles = share.list(newRemoteDir, localInfo.getName());
+        if (!remoteFiles.isEmpty()) {
+            if (remoteFiles.get(0).getEndOfFile() == localInfo.getSize()) {
+//                Log.v("文件上传", localInfo.getName() + " 已经存在了");
+                return 2;
+            }
+        }
+
+        File source = new File(localInfo.getPath());
+        long bytesWrite = SmbFiles.copy(source, share, newRemoteDir + File.separator + localInfo.getName(), true);// 如果已经上传的文件 只上传了一部分，这里允许覆盖原文件，重新上传
+        return bytesWrite > 1 ? 1 : 0;
+    }
+
+    /**
+     * windows 下：mkdir xx/yy/zz 可以创建多级目录;  linux 下 需要 -p 参数：  mkdir -p xx/yy/zz , 否则使用 mkdir xx/yy/zz 则会无视路径创建一个 xxyyyzz的目录
+     * linux 下使用  share.mkdir(newRemoteDir); 创建多级目录，会报错 STATUS_OBJECT_PATH_NOT_FOUND (0xc000003a): Create failed for \\192.168.1.199\data\photo\2023\09\11
+     */
+    private static void mkdir(DiskShare share, String newRemoteDir) {
+        List<String> dirs = File.separator.equals("\\") ? Arrays.asList(newRemoteDir.split("\\\\")) : Arrays.asList(newRemoteDir.split(File.separator));
+        for (int i = 0; i < dirs.size(); i++) {
+            String subDir = String.join(File.separator, dirs.subList(0, i + 1));
+            if (!share.folderExists(subDir)) {
+                share.mkdir(subDir);
+            }
+        }
+    }
+
+    private static String reconfigRemoteDir(String remoteDir, String placeStrategy, String fileCreateDate) {
+        if (placeStrategy.equals("N")) {
+            return remoteDir;
+        }
+
+        String[] createDateArray = fileCreateDate.split("-");
+        if (placeStrategy.equals("byDay")) {
+            String yearMonthDayDir = String.join(File.separator, createDateArray);
+            return StringUtils.isNotBlank(remoteDir) ? remoteDir + File.separator + yearMonthDayDir : yearMonthDayDir;
+        }
+        if (placeStrategy.equals("byMonth")) {
+            String yearMonthDir = createDateArray[0] + File.separator + createDateArray[1];
+            return StringUtils.isNotBlank(remoteDir) ? remoteDir + File.separator + yearMonthDir : yearMonthDir;
+        }
+        if (placeStrategy.equals("byYear")) {
+            String yearDir = createDateArray[0];
+            return StringUtils.isNotBlank(remoteDir) ? remoteDir + File.separator + yearDir : yearDir;
+        }
+        return remoteDir;
     }
 
     // remotePathFile 不包含共享目录， 包含路的文件名称

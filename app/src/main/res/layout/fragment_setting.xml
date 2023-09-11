@@ -186,6 +186,36 @@
         </com.google.android.material.textfield.TextInputLayout><!--android:background="@null"-->
 
         <RadioGroup
+                android:id="@+id/placeByDateGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <RadioButton
+                    android:id="@+id/dontPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:text="不归档"/>
+
+            <RadioButton
+                    android:id="@+id/byDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="按天归档"/>
+            <RadioButton
+                    android:id="@+id/byMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="按月归档"/>
+            <RadioButton
+                    android:id="@+id/byYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="按年归档"/>
+        </RadioGroup>
+
+        <RadioGroup
                 android:id="@+id/backUpStrategyGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
