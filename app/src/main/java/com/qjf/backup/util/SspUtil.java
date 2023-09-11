@@ -70,4 +70,8 @@ public class SspUtil {
     public static String getAutoBackUp(Context context) {
         return getAll(context).getOrDefault("backUpStrategy", "").equals("autoBackUp") ? "Y" : "N";
     }
+
+    public static boolean showHiddenSetting(Context context){
+        return getAll(context).getOrDefault("showHidden", "").equals("Y");
+    }
 }

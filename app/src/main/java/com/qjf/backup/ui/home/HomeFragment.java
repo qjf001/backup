@@ -19,7 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.hierynomus.msfscc.FileAttributes;
 import com.hierynomus.msfscc.fileinformation.FileIdBothDirectoryInformation;
+import com.hierynomus.protocol.commons.EnumWithValue;
 import com.hierynomus.smbj.session.Session;
 import com.hierynomus.smbj.share.DiskShare;
 import com.qjf.backup.R;
@@ -109,7 +111,7 @@ public class HomeFragment extends Fragment {
             try {
                 DiskShare share = (DiskShare) session.connectShare(shareName);
                 List<FileIdBothDirectoryInformation> remoteChildren = share.list("");// 包含目录
-                List<FileObjEntity> children = filterAndConvert(remoteChildren);
+                List<FileObjEntity> children = filterAndConvert(remoteChildren, getContext());
 
                 long childrenDirCount = children.stream().filter(FileObjEntity::isDir).count();// 子目录数量
                 long childrenFileCount = children.size() - childrenDirCount;// 包含的文件数量
@@ -142,10 +144,19 @@ public class HomeFragment extends Fragment {
         }).start();
     }
 
-    private static List<FileObjEntity> filterAndConvert(List<FileIdBothDirectoryInformation> remoteChildren) {
+    private static List<FileObjEntity> filterAndConvert(List<FileIdBothDirectoryInformation> remoteChildren, Context context) {
+        boolean showHidden = SspUtil.showHiddenSetting(context);
         return remoteChildren.stream()
-                .filter(file -> !(file.getFileName().equals(".") || file.getFileName().equals("..")))
+                .filter(file -> !(file.getFileName().equals(".") || file.getFileName().equals(".."))).filter(file -> filterHidden(file, showHidden))
                 .map(FileObjEntity::convert).sorted(FileObjEntity::compareBy).collect(Collectors.toList());
+    }
+
+    private static boolean filterHidden(FileIdBothDirectoryInformation remoteFile, boolean showHidden) {
+        boolean hidden = EnumWithValue.EnumUtils.isSet(remoteFile.getFileAttributes(), FileAttributes.FILE_ATTRIBUTE_HIDDEN);
+        if (!showHidden) {
+            return !remoteFile.getFileName().startsWith(".") && !hidden;
+        }
+        return true;
     }
 
     private List<FileObjEntity> noData() {
@@ -185,12 +196,12 @@ public class HomeFragment extends Fragment {
             try {
                 String remotePath = clickAllPath.size() > 1 ? String.join(File.separator, clickAllPath.subList(1, clickAllPath.size())) : "";
                 List<FileIdBothDirectoryInformation> allFile = share.list(remotePath);// 包含目录
-                remoteFiles = filterAndConvert(allFile);
+                remoteFiles = filterAndConvert(allFile, getContext());
 
                 for (FileObjEntity remoteFile : remoteFiles) {// todo 这种方式有没有更好的替代呢？效率太低下了
                     if (remoteFile.isDir()) {
                         List<FileIdBothDirectoryInformation> remoteChildren = share.list(remotePath + File.separator + remoteFile.getFileName());// 包含目录
-                        List<FileObjEntity> children = filterAndConvert(remoteChildren);
+                        List<FileObjEntity> children = filterAndConvert(remoteChildren, getContext());
 
                         long childrenDirCount = children.stream().filter(FileObjEntity::isDir).count();// 子目录数量
                         long childrenFileCount = children.size() - childrenDirCount;// 包含的文件数量
@@ -265,7 +276,7 @@ public class HomeFragment extends Fragment {
 
             // 调用查询接口
             searchListByCurrentDir();
-            System.out.println("第几个子元素被点击了=" + index + "  子元素名称=" + ((TextView) v).getText());
+//            System.out.println("第几个子元素被点击了=" + index + "  子元素名称=" + ((TextView) v).getText());
             // 查询下级目录和文件
 //            View rootV = v.getRootView();
 //            System.out.println(rootV.getId());

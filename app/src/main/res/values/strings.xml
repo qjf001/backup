@@ -8,7 +8,7 @@
     <string name="ftp_user">FTP用户名</string>
     <string name="ftp_pwd">FTP密码</string>
 
-    <string name="smb_server">SMB服务器地址:端口</string>
+    <string name="smb_server">SMB服务器地址</string>
     <string name="smb_shareName">SMB共享目录(不包含路径符号)</string>
     <string name="smb_user">SMB用户名</string>
     <string name="smb_pwd">SMB密码</string>

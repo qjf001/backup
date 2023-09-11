@@ -101,6 +101,9 @@ public class MediaFileBackUp {
     // 准备两个容器： 1. 记录上传成功的文件信息：文件名称，文件大小，上传时间，上传耗时；2.记录上传失败的文件：文件名称，文件大小，上传时间，上传耗时，失败原因
     // 使用对象 BackupLog 对象保存以上信息
     public static void uploadBySmb(Context context, String mediaType, Session session, List<FileLocalInfo> datas, List<BackupLog> succ, List<BackupLog> fail, List<FileLocalInfo> currentFile) {
+        Long scanLogId = DBHelper.getInstance(context).insertScanLog(mediaType);
+        upScanLog(context, scanLogId, datas);
+
         Map<String, List<FileLocalInfo>> map = MediaFileUtil.convertToMap(datas);
         String remotePath = SspUtil.getRemotePathByType(context, mediaType);// 第一级目录需要设置为共享目录
         DiskShare diskShare = SmbUtil.getDiskShare(session, context);
@@ -109,6 +112,7 @@ public class MediaFileBackUp {
                 long start = System.currentTimeMillis();
                 int result = 0;
                 BackupLog backupLog = BackupLog.convertBy(fileLocalInfo);
+                String errMsg = "";
                 try {
                     currentFile.add(0, fileLocalInfo);
                     result = SmbUtil.uploadFile2(fileLocalInfo, diskShare, SmbUtil.getRemoteChildrenDir(SspUtil.getSmbShareName(context), remotePath));
@@ -120,6 +124,13 @@ public class MediaFileBackUp {
                 backupLog.setTakeMill((System.currentTimeMillis() - start) + "");
                 boolean addResult = backupLog.getResult().equals("0") ? fail.add(backupLog) : succ.add(backupLog);
                 Log.v("文件上传", fileLocalInfo.getName() + " 上传" + getUploadResultStr(result) + " " + ByteConvert.convertToStr(fileLocalInfo.getSize()) + " 耗时=" + (System.currentTimeMillis() - start) + ", err=" + backupLog.getErrMsg());
+                try {
+                    if (result == 1 || StringUtils.isNotBlank(errMsg)) {
+                        DBHelper.getInstance(context).insertBackLog(scanLogId, fileLocalInfo.getName(), fileLocalInfo.getSize(), result, System.currentTimeMillis() - start, errMsg);
+                    }
+                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+                }
             }
         }
     }

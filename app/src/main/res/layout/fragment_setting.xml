@@ -195,7 +195,7 @@
                     android:id="@+id/handBackUp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:enabled="true"
+                    android:checked="true"
                     android:text="@string/handBackUpText"/>
 
             <RadioButton
@@ -225,8 +225,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:enabled="false"
+                    android:checked="false"
                     android:text="所有网络环境下均可备份"/>
         </RadioGroup>
+
+
+        <RadioGroup
+                android:id="@+id/showHiddenGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <RadioButton
+                    android:id="@+id/showHidden"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="显示隐藏"
+                    android:checked="true"/>
+
+            <RadioButton
+                    android:id="@+id/dontShowHidden"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:text="不显示隐藏"/>
+        </RadioGroup>
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="14dp"
+                android:layout_marginStart="10dp"
+                android:textAlignment="gravity"
+                android:textSize="12sp"
+                android:textColor="@color/design_default_color_error"
+                android:text="tips: .开头的文件和目录视为隐藏文件和目录"
+                />
 
         <!--<com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

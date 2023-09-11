@@ -349,15 +349,22 @@ public class SettingFragment extends Fragment {
         binding.audioPath.setText(settingMap.getOrDefault("audioPath", ""));
         binding.otherPath.setText(settingMap.getOrDefault("otherPath", ""));
 
-        binding.autoBackUp.setChecked("autoBackUp".equals(settingMap.getOrDefault("backUpStrategy", "")));// "autoBackUp" / "handBackUp"
-        binding.handBackUp.setChecked("handBackUp".equals(settingMap.getOrDefault("backUpStrategy", "")));// "autoBackUp" / "handBackUp"
+        binding.handBackUp.setChecked(true);// "autoBackUp" / "handBackUp"
+//        binding.autoBackUp.setChecked("autoBackUp".equals(settingMap.getOrDefault("backUpStrategy", "")));// "autoBackUp" / "handBackUp"
+//        binding.handBackUp.setChecked("handBackUp".equals(settingMap.getOrDefault("backUpStrategy", "")));// "autoBackUp" / "handBackUp"
 
 //        binding.imgLastBackupDatetime.setText(settingMap.getOrDefault("imgLastBackupDatetime", ""));
 //        binding.videoLastBackupDatetime.setText(settingMap.getOrDefault("videoLastBackupDatetime", ""));
 //        binding.audioLastBackupDatetime.setText(settingMap.getOrDefault("audioLastBackupDatetime", ""));
 
-        binding.onlyWifiBackUp.setChecked("Y".equals(settingMap.getOrDefault("onlyWifiBackUp", "")));//
-        binding.allNetworkBackup.setChecked("N".equals(settingMap.getOrDefault("onlyWifiBackUp", "")));//
+        binding.onlyWifiBackUp.setChecked(true);//
+//        binding.onlyWifiBackUp.setChecked("Y".equals(settingMap.getOrDefault("onlyWifiBackUp", "")));//
+//        binding.allNetworkBackup.setChecked("N".equals(settingMap.getOrDefault("onlyWifiBackUp", "")));//
+
+        String showHidden = settingMap.getOrDefault("showHidden", "Y");
+        binding.showHidden.setChecked(showHidden.equals("Y"));
+        binding.dontShowHidden.setChecked(!showHidden.equals("Y"));
+
     }
 
     private void setSubmitBtListener() {
@@ -382,6 +389,9 @@ public class SettingFragment extends Fragment {
             String wifibackupText = backupNetworkView.getText().toString();
             String backupNetworkStrategy = "只在WIFI环境下备份".equals(wifibackupText) ? "Y" : "N";
 
+            RadioButton showHiddenSelected = binding.showHiddenGroup.findViewById(binding.showHiddenGroup.getCheckedRadioButtonId());
+            String showHiddenSelectedText = showHiddenSelected.getText().toString();
+            String showHiddenStrategy = "显示隐藏".equals(showHiddenSelectedText) ? "Y" : "N";
 
 //            String imgLastBackupDatetime = Objects.requireNonNull(binding.imgLastBackupDatetime.getText()).toString();// 格式 yyyy-MM-dd HH:mm:ss
 //            String videoLastBackupDatetime = Objects.requireNonNull(binding.videoLastBackupDatetime.getText()).toString();// 格式 yyyy-MM-dd HH:mm:ss
@@ -407,6 +417,7 @@ public class SettingFragment extends Fragment {
 //            editor.putString("audioLastBackupDatetime", audioLastBackupDatetime);
 
             editor.putString("onlyWifiBackUp", backupNetworkStrategy);
+            editor.putString("showHidden", showHiddenStrategy);
 
             // 如果不关心返回值，可以由apply 替换 commit, apply 会立即提交到内存然后异步更新到磁盘
             editor.apply();// editor.commit();

@@ -2,6 +2,7 @@ package com.qjf.backup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -19,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qjf.backup.databinding.ActivityMainBinding;
 import com.qjf.backup.ui.home.UploadTimerService;
 import com.qjf.backup.ui.log.LogClearService;
+import com.qjf.backup.util.Permission;
 import com.qjf.backup.util.SspUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+       new Permission().checkPermissions(this);
     }
 
     private void registerNetworkCallback(Context context) {
@@ -73,6 +76,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
         getDelegate().onDestroy();
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Permission.RequestCode) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    Log.e("p","拒绝的权限名称：" + permissions[i]);
+                    Log.e("p","拒绝的权限结果：" + grantResults[i]);
+                    Log.e("p","有权限未授权，可以弹框出来，让客户去手机设置界面授权。。。");
+                }else {
+                    Log.e("p","授权的权限名称：" + permissions[i]);
+                    Log.e("p","授权的权限结果：" + grantResults[i]);
+                }
+            }
+        }
     }
 
     final ConnectivityManager.NetworkCallback mNetworkCallback = new ConnectivityManager.NetworkCallback(ConnectivityManager.NetworkCallback.FLAG_INCLUDE_LOCATION_INFO) {

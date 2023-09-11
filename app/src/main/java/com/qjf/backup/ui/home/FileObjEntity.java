@@ -23,11 +23,12 @@ public class FileObjEntity {
     }
 
     public static int compareBy(FileObjEntity obj1, FileObjEntity obj2) {
-        return Boolean.compare(obj1.isDir(), obj2.isDir());
+        return Boolean.compare(obj2.isDir(), obj1.isDir());
     }
 
     public static FileObjEntity convert(FileIdBothDirectoryInformation remoteFile) {
         boolean isDir = EnumWithValue.EnumUtils.isSet(remoteFile.getFileAttributes(), FileAttributes.FILE_ATTRIBUTE_DIRECTORY);
+        boolean hidden = EnumWithValue.EnumUtils.isSet(remoteFile.getFileAttributes(), FileAttributes.FILE_ATTRIBUTE_HIDDEN);
         return new FileObjEntity(remoteFile.getFileName(), Long.valueOf(remoteFile.getEndOfFile()).intValue(), isDir);
     }
 
