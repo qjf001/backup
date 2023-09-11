@@ -101,6 +101,8 @@ public class MediaFileBackUp {
     // 准备两个容器： 1. 记录上传成功的文件信息：文件名称，文件大小，上传时间，上传耗时；2.记录上传失败的文件：文件名称，文件大小，上传时间，上传耗时，失败原因
     // 使用对象 BackupLog 对象保存以上信息
     public static void uploadBySmb(Context context, String mediaType, Session session, List<FileLocalInfo> datas, List<BackupLog> succ, List<BackupLog> fail, List<FileLocalInfo> currentFile) {
+        String placeStrategy = SspUtil.getPlaceStrategy(context);
+
         Long scanLogId = DBHelper.getInstance(context).insertScanLog(mediaType);
         upScanLog(context, scanLogId, datas);
 
@@ -115,7 +117,7 @@ public class MediaFileBackUp {
                 String errMsg = "";
                 try {
                     currentFile.add(0, fileLocalInfo);
-                    result = SmbUtil.uploadFile2(fileLocalInfo, diskShare, SmbUtil.getRemoteChildrenDir(SspUtil.getSmbShareName(context), remotePath));
+                    result = SmbUtil.uploadFile3(fileLocalInfo, diskShare, SmbUtil.getRemoteChildrenDir(SspUtil.getSmbShareName(context), remotePath), placeStrategy);
                 } catch (Exception e) {
                     // 失败了
                     backupLog.setResult("0");
