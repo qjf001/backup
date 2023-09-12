@@ -42,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
         // 启动后台服务
         if (SspUtil.getAutoBackUp(getApplicationContext()).equals("Y")) {
             startService(new Intent(MainActivity.this, UploadTimerService.class));// 自动备份，因为息屏状态下网络不通，因此自动备份没有太大意义了
-            startService(new Intent(MainActivity.this, LogClearService.class));// 自动清理日志
         }
-        // todo 启动一个服务 清理日志
+        startService(new Intent(MainActivity.this, LogClearService.class));// 自动清理日志 手动备份也有日志
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-       new Permission().checkPermissions(this);
+        new Permission().checkPermissions(this);
     }
 
     private void registerNetworkCallback(Context context) {
@@ -83,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == Permission.RequestCode) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    Log.e("p","拒绝的权限名称：" + permissions[i]);
-                    Log.e("p","拒绝的权限结果：" + grantResults[i]);
-                    Log.e("p","有权限未授权，可以弹框出来，让客户去手机设置界面授权。。。");
-                }else {
-                    Log.e("p","授权的权限名称：" + permissions[i]);
-                    Log.e("p","授权的权限结果：" + grantResults[i]);
+                    Log.e("p", "拒绝的权限名称：" + permissions[i]);
+                    Log.e("p", "拒绝的权限结果：" + grantResults[i]);
+                    Log.e("p", "有权限未授权，可以弹框出来，让客户去手机设置界面授权。。。");
+                } else {
+                    Log.e("p", "授权的权限名称：" + permissions[i]);
+                    Log.e("p", "授权的权限结果：" + grantResults[i]);
                 }
             }
         }
